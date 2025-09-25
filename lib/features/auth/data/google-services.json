@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "154627419463",
+    "project_id": "livora-b5b9e",
+    "storage_bucket": "livora-b5b9e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:154627419463:android:ee69702c1ffb680c067062",
+        "android_client_info": {
+          "package_name": "com.example.livora"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "154627419463-mmvio5icr08kqmj67bk0qrbqfekpc0se.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.livora",
+            "certificate_hash": "f241e60bc27af3cf92818d3f4341a08ed8992a42"
+          }
+        },
+        {
+          "client_id": "154627419463-ljhla0no8q868fqr4ud1lh2ia7usu1ho.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEb5I0t2606YMozdQtGYxiq8oW_QJF-gk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "154627419463-ljhla0no8q868fqr4ud1lh2ia7usu1ho.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "154627419463-f0vb683g36tofeo88fcfkfju4ql9tdkp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.LivoraParker"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:154627419463:android:92a9b400f56b7d5f067062",
+        "android_client_info": {
+          "package_name": "com.livora.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "154627419463-qf3l6cmeqefh60u2td5lrhk1os1plekj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.livora.app",
+            "certificate_hash": "f241e60bc27af3cf92818d3f4341a08ed8992a42"
+          }
+        },
+        {
+          "client_id": "154627419463-ljhla0no8q868fqr4ud1lh2ia7usu1ho.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEb5I0t2606YMozdQtGYxiq8oW_QJF-gk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "154627419463-ljhla0no8q868fqr4ud1lh2ia7usu1ho.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "154627419463-f0vb683g36tofeo88fcfkfju4ql9tdkp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.LivoraParker"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>154627419463-qibpplg50m30r0ojeehcjnomskbr1uoo.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.154627419463-qibpplg50m30r0ojeehcjnomskbr1uoo</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>154627419463-55fo7itcnj2c65n1uk7ibf5ai0bca35s.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAzLcvojzDMexcss46DjRVYyy-ZfHTSC3g</string>
+	<key>GCM_SENDER_ID</key>
+	<string>154627419463</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.livora</string>
+	<key>PROJECT_ID</key>
+	<string>livora-b5b9e</string>
+	<key>STORAGE_BUCKET</key>
+	<string>livora-b5b9e.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:154627419463:ios:10410bab4a5550f8067062</string>
+</dict>
+</plist>
