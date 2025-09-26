@@ -67,11 +67,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: DesignSystem.spacing24),
 
             // Profile Options
-            _buildProfileOption(
-              icon: Icons.edit,
-              title: 'Edit Profile',
-              onTap: () {},
-            ),
+            // _buildProfileOption(
+            //   icon: Icons.edit,
+            //   title: 'Edit Profile',
+            //   onTap: () {},
+            // ),
             _buildProfileOption(
               icon: Icons.notifications,
               title: 'Notifications',

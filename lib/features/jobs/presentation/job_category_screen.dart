@@ -3,6 +3,7 @@ import '../../../design_system.dart';
 import '../data/jobs_api.dart';
 import '../data/jobs_models.dart';
 import 'job_service_selection_screen.dart';
+import 'package:collection/collection.dart'; // <-- Import this for firstWhereOrNull
 
 class JobCategoryScreen extends StatefulWidget {
   const JobCategoryScreen({super.key});
@@ -36,7 +37,8 @@ class _JobCategoryScreenState extends State<JobCategoryScreen> {
 
       setState(() {
         _services = servicesResponse.records;
-        _categories = _services.map((s) => s.category).toSet().toList();
+        // Collect unique categories and sort them for consistent display
+        _categories = _services.map((s) => s.category).toSet().toList()..sort();
         _isLoading = false;
       });
     } catch (e) {
@@ -54,10 +56,13 @@ class _JobCategoryScreenState extends State<JobCategoryScreen> {
       appBar: AppBar(
         title: Text(
           'Select Category',
-          style: DesignSystem.textTheme.headlineMedium,
+          style: DesignSystem.textTheme.headlineMedium?.copyWith(
+            color: DesignSystem.textPrimary, // Ensure text color is visible
+          ),
         ),
         backgroundColor: DesignSystem.backgroundLight,
         elevation: 0,
+        iconTheme: const IconThemeData(color: DesignSystem.textPrimary), // Back button color
       ),
       body: _buildBody(),
     );
@@ -79,7 +84,9 @@ class _JobCategoryScreenState extends State<JobCategoryScreen> {
             const SizedBox(height: DesignSystem.spacing16),
             Text(
               'Error loading categories',
-              style: DesignSystem.textTheme.headlineSmall,
+              style: DesignSystem.textTheme.headlineSmall?.copyWith(
+                color: DesignSystem.textPrimary,
+              ),
             ),
             const SizedBox(height: DesignSystem.spacing8),
             Text(
@@ -110,7 +117,9 @@ class _JobCategoryScreenState extends State<JobCategoryScreen> {
         children: [
           Text(
             'Choose a category for your job',
-            style: DesignSystem.textTheme.headlineSmall,
+            style: DesignSystem.textTheme.headlineSmall?.copyWith(
+              color: DesignSystem.textPrimary,
+            ),
           ),
           const SizedBox(height: DesignSystem.spacing8),
           Text(
@@ -125,6 +134,7 @@ class _JobCategoryScreenState extends State<JobCategoryScreen> {
               itemCount: _categories.length,
               itemBuilder: (context, index) {
                 final category = _categories[index];
+                // Filter services for the current category
                 final categoryServices = _services
                     .where((s) => s.category == category)
                     .toList();
@@ -139,12 +149,20 @@ class _JobCategoryScreenState extends State<JobCategoryScreen> {
   }
 
   Widget _buildCategoryCard(String category, List<ServiceItem> services) {
+    // Find the category image URL. We look for any service within this category
+    // that has a category_img defined.
+    final String? categoryImageUrl = services
+        .firstWhereOrNull((s) => s.category_img != null && s.category_img!.isNotEmpty)
+        ?.category_img;
+
     return Card(
       margin: const EdgeInsets.only(bottom: DesignSystem.spacing12),
       color: DesignSystem.backgroundLight,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(DesignSystem.radiusMedium),
+        side: BorderSide(color: DesignSystem.backgroundLighter), // Add a subtle border
       ),
+      elevation: 0, // Remove default card elevation
       child: InkWell(
         onTap: () => _navigateToServiceSelection(category, services),
         borderRadius: BorderRadius.circular(DesignSystem.radiusMedium),
@@ -159,18 +177,39 @@ class _JobCategoryScreenState extends State<JobCategoryScreen> {
                   color: DesignSystem.primaryColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(DesignSystem.radiusSmall),
                 ),
-                child: Icon(
-                  _getCategoryIcon(category),
-                  color: DesignSystem.primaryColor,
-                  size: 24,
-                ),
+                child: categoryImageUrl != null
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(DesignSystem.radiusSmall),
+                        child: Image.network(
+                          categoryImageUrl,
+                          height: 48,
+                          width: 48,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) => Icon(
+                            Icons.category, // Fallback icon if image fails
+                            color: DesignSystem.primaryColor,
+                            size: 28,
+                          ),
+                        ),
+                      )
+                    : Icon(
+                        Icons.category, // Fallback icon if no image URL is found
+                        color: DesignSystem.primaryColor,
+                        size: 28,
+                      ),
               ),
               const SizedBox(width: DesignSystem.spacing16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(category, style: DesignSystem.textTheme.titleLarge),
+                    Text(
+                      category,
+                      style: DesignSystem.textTheme.titleLarge?.copyWith(
+                        color: DesignSystem.textPrimary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                     const SizedBox(height: DesignSystem.spacing4),
                     Text(
                       '${services.length} services available',
@@ -193,24 +232,26 @@ class _JobCategoryScreenState extends State<JobCategoryScreen> {
     );
   }
 
-  IconData _getCategoryIcon(String category) {
-    switch (category.toLowerCase()) {
-      case 'education & learning':
-        return Icons.school;
-      case 'family care':
-        return Icons.family_restroom;
-      case 'family & lifestyle':
-        return Icons.home;
-      case 'health & wellness':
-        return Icons.health_and_safety;
-      case 'technology':
-        return Icons.computer;
-      case 'business':
-        return Icons.business;
-      default:
-        return Icons.category;
-    }
-  }
+
+  // This method is no longer needed if we are using category_img
+  // IconData _getCategoryIcon(String category) {
+  //   switch (category.toLowerCase()) {
+  //     case 'education & learning':
+  //       return Icons.school;
+  //     case 'family care':
+  //       return Icons.family_restroom;
+  //     case 'family & lifestyle':
+  //       return Icons.home;
+  //     case 'health & wellness':
+  //       return Icons.health_and_safety;
+  //     case 'technology':
+  //       return Icons.computer;
+  //     case 'business':
+  //       return Icons.business;
+  //     default:
+  //       return Icons.category;
+  //   }
+  // }
 
   void _navigateToServiceSelection(
     String category,

@@ -8,6 +8,7 @@ import '../../../design_system.dart';
 import '../../jobs/data/location_provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:collection/collection.dart'; // <-- ADD THIS IMPORT
 
 class JobsListScreen extends ConsumerStatefulWidget {
   const JobsListScreen({super.key});
@@ -272,7 +273,7 @@ class _JobsListScreenState extends ConsumerState<JobsListScreen> {
                   Text(
                     "Welcome back, ${user.displayName!}",
                     style: DesignSystem.textTheme.bodySmall?.copyWith(
-                      color: Colors.white70,
+                      color: DesignSystem.textPrimary,
                       fontWeight: FontWeight.w400,
                       fontSize: 13,
                     ),
@@ -314,89 +315,115 @@ class _JobsListScreenState extends ConsumerState<JobsListScreen> {
             Text(
               'Categories',
               style: DesignSystem.textTheme.titleMedium?.copyWith(
-                color: DesignSystem.textSecondary,
+                color: DesignSystem.textPrimary,
                 fontWeight: FontWeight.w600,
                 fontSize: 13,
               ),
             ),
             const SizedBox(height: DesignSystem.spacing12),
             SizedBox(
-              height: 70,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemCount: categories.length,
-                separatorBuilder: (_, __) =>
-                    const SizedBox(width: DesignSystem.spacing12),
-                itemBuilder: (context, index) {
-                  final cat = categories[index];
-                  final selected = cat == _selectedCategory;
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _selectedCategory = selected ? null : cat;
-                        _selectedService = null;
-                      });
-                      _page = 1;
-                      _fetchJobs(reset: true);
-                    },
-                    child: Container(
-                      width: 90,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: DesignSystem.spacing10,
-                          horizontal: DesignSystem.spacing8),
-                      decoration: BoxDecoration(
-                        color: selected
-                            ? DesignSystem.primaryColor
-                            : DesignSystem.backgroundLight,
-                        borderRadius:
-                            BorderRadius.circular(DesignSystem.radiusLarge),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.08),
-                            blurRadius: 6,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                        border: Border.all(
-                          color: selected
-                              ? DesignSystem.primaryColor
-                              : DesignSystem.backgroundLighter,
-                          width: 1.2,
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          cat,
-                          style: DesignSystem.textTheme.bodySmall?.copyWith(
-                            color: selected
-                                ? Colors.white
-                                : DesignSystem.textSecondary,
-                            fontWeight:
-                                selected ? FontWeight.bold : FontWeight.normal,
-                          ),
-                          textAlign: TextAlign.center,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ),
-                  );
-                },
+  height: 115, // Increase height to accommodate image and text
+  child: ListView.separated(
+    scrollDirection: Axis.horizontal,
+    itemCount: categories.length,
+    separatorBuilder: (_, __) =>
+        const SizedBox(width: DesignSystem.spacing12),
+    itemBuilder: (context, index) {
+      final cat = categories[index];
+      final selected = cat == _selectedCategory;
+
+      // Find a service item that belongs to this category to get the category_img
+      final serviceWithCategoryImg =
+          _services.firstWhereOrNull((s) => s.category == cat && s.category_img != null);
+      final String? currentCategoryImg = serviceWithCategoryImg?.category_img;
+
+      return GestureDetector(
+        onTap: () {
+          setState(() {
+            _selectedCategory = selected ? null : cat;
+            _selectedService = null;
+          });
+          _page = 1;
+          _fetchJobs(reset: true);
+        },
+        child: Container(
+          width: 100,
+          padding: const EdgeInsets.symmetric(
+              vertical: DesignSystem.spacing10,
+              horizontal: DesignSystem.spacing8),
+          decoration: BoxDecoration(
+            color: selected
+                ? const Color.fromRGBO(62, 142, 126, 1)
+                : Color(  0xFFdbdbdb),
+            borderRadius:
+                BorderRadius.circular(DesignSystem.radiusLarge),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.08),
+                blurRadius: 6,
+                offset: const Offset(0, 2),
               ),
+            ],
+            border: Border.all(
+              color: selected
+                  ? DesignSystem.primaryColor
+                  : DesignSystem.backgroundLighter,
+              width: 1.2,
             ),
+          ),
+          child: Column( // Change to Column to stack image and text
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              if (currentCategoryImg != null && currentCategoryImg.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: DesignSystem.spacing4),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(DesignSystem.radiusSmall),
+                    child: Image.network(
+                      currentCategoryImg,
+                      height: 50, // Adjust size as needed
+                      width: 60,  // Adjust size as needed
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => const Icon(
+                          Icons.category, // Fallback icon
+                          color: DesignSystem.textSecondary, size: 36),
+                    ),
+                  ),
+                ),
+              Text(
+                cat,
+                style: DesignSystem.textTheme.bodySmall?.copyWith(
+                  color: selected
+                      ? Colors.white
+                      : DesignSystem.backgroundDark,
+                  fontWeight:
+                      selected ? FontWeight.bold : FontWeight.normal,
+                ),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  ),
+),
             const SizedBox(height: DesignSystem.spacing20),
             // Services
             Text(
               'Services',
               style: DesignSystem.textTheme.titleMedium?.copyWith(
-                color: DesignSystem.textSecondary,
+                color: DesignSystem.textPrimary,
                 fontWeight: FontWeight.w600,
                 fontSize: 13,
               ),
             ),
             const SizedBox(height: DesignSystem.spacing12),
             SizedBox(
-              height: 70,
+              height: 40,
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 itemCount: filteredServices.length,
@@ -422,7 +449,7 @@ class _JobsListScreenState extends ConsumerState<JobsListScreen> {
                       decoration: BoxDecoration(
                         color: selected
                             ? DesignSystem.primaryColor
-                            : DesignSystem.backgroundLight,
+                            :  Color(  0xFFdbdbdb),
                         borderRadius:
                             BorderRadius.circular(DesignSystem.radiusLarge),
                         boxShadow: [
@@ -466,7 +493,7 @@ class _JobsListScreenState extends ConsumerState<JobsListScreen> {
                               style: DesignSystem.textTheme.bodySmall?.copyWith(
                                 color: selected
                                     ? Colors.white
-                                    : DesignSystem.textSecondary,
+                                    : DesignSystem.backgroundDark,
                                 fontWeight: selected
                                     ? FontWeight.bold
                                     : FontWeight.normal,
@@ -539,7 +566,7 @@ class _JobsListScreenState extends ConsumerState<JobsListScreen> {
             Text(
               'Popular Services',
               style: DesignSystem.textTheme.titleMedium?.copyWith(
-                color: DesignSystem.textSecondary,
+                color: DesignSystem.textPrimary,
                 fontWeight: FontWeight.w600,
                 fontSize: 13,
               ),

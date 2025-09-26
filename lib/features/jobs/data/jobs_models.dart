@@ -76,6 +76,7 @@ class ServiceItem {
     this.tags = const [],
     this.normalizedName = '',
     this.image = '',
+    required this.category_img, 
   });
 
   final String id;
@@ -83,10 +84,13 @@ class ServiceItem {
   final String category;
   final List<String> tags;
   final String normalizedName;
+  // ignore: non_constant_identifier_names
+  final String category_img;
   final String image; // <-- add this
 
   factory ServiceItem.fromJson(Map<String, dynamic> json) {
     return ServiceItem(
+      category_img: json['category_img']?.toString() ?? '',
       id: json['_id']?.toString() ?? '',
       name: json['name']?.toString() ?? '',
       category: json['category']?.toString() ?? '',
